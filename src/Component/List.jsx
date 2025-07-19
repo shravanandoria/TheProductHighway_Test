@@ -20,6 +20,7 @@ const List = ({
       <div
         style={{
           display: "flex",
+          position: "relative",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
