@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 const List = ({
   nestedLength = 0,
@@ -55,16 +55,16 @@ const List = ({
             </button>
           </div>
         </div>
-        <div>
-          {childList.map((e, i) => (
-            <List
-              nestedLength={30}
-              currentLevel={currentLevel + 1}
-              setIsLevelChecked={setIsLevelChecked}
-              isLevelChecked={isLevelChecked}
-            />
-          ))}
-        </div>
+      </div>
+      <div style={{ position: "relative", left: `${nestedLength}px` }}>
+        {childList.map((e, i) => (
+          <List
+            nestedLength={30}
+            currentLevel={currentLevel + 1}
+            setIsLevelChecked={setIsLevelChecked}
+            isLevelChecked={isLevelChecked}
+          />
+        ))}
       </div>
     </div>
   );
