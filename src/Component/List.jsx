@@ -26,7 +26,7 @@ const List = ({
           border: "2px solid black",
           padding: "6px",
           gap: "5px",
-          marginLeft: `${nestedLength}px`,
+          left: `${nestedLength}px`,
         }}
       >
         <div style={{ display: "flex", gap: "6px", padding: "6px" }}>
