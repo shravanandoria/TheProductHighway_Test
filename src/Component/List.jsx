@@ -1,71 +1,67 @@
 import React, { useState } from "react";
 
 const List = ({
-  nestedLength = 0,
-  currentLevel = 0,
-  setIsLevelChecked,
-  isLevelChecked,
+  parent,
+  parentId,
+  childId,
+  checkedChildId,
+  setIdChecked = () => {},
+  handleRemoveParent = () => {},
 }) => {
-  console.log(currentLevel);
-  const [childList, setChildList] = useState([]);
-  const [disableAddList, setDisableAddList] = useState(false);
+  const [hasChild, setHasChild] = useState(false);
 
-  const handleAddChild = () => {
-    setChildList((prev) => [...prev, {}]);
-    setDisableAddList(true);
+  const handleAddList = () => {
+    setHasChild(true);
+  };
+
+  const removeList = () => {
+    setHasChild(false);
+  };
+
+  const handleChecked = () => {
+    setIdChecked(parentId, childId);
+  };
+
+  const removeParent = () => {
+    handleRemoveParent(parentId);
   };
 
   return (
     <div>
       <div
-        style={{
-          display: "flex",
-          position: "relative",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          border: "2px solid black",
-          padding: "6px",
-          gap: "5px",
-          left: `${nestedLength}px`,
-        }}
+        className="list-container"
+        style={{ position: "relative", left: "30px" }}
       >
-        <div style={{ display: "flex", gap: "6px", padding: "6px" }}>
-          <label htmlFor="">
-            <input
-              type="checkbox"
-              checked={
-                isLevelChecked?.isChecked &&
-                currentLevel >= isLevelChecked.level
-              }
-            />
-          </label>
-          <div>
-            <button disabled={disableAddList} onClick={handleAddChild}>
-              Nest List
-            </button>
-            <button
-              onClick={() =>
-                setIsLevelChecked((prev) => ({
-                  level: currentLevel,
-                  isChecked: !prev.isChecked,
-                }))
-              }
-            >
-              Select List
-            </button>
-          </div>
-        </div>
-      </div>
-      <div style={{ position: "relative", left: `${nestedLength}px` }}>
-        {childList.map((e, i) => (
-          <List
-            nestedLength={30}
-            currentLevel={currentLevel + 1}
-            setIsLevelChecked={setIsLevelChecked}
-            isLevelChecked={isLevelChecked}
+        <label htmlFor="">
+          <input
+            type="checkbox"
+            defaultChecked={false}
+            checked={
+              (parentId === parent.id && parent.checkedChildId == 0) ||
+              (parent.checkedChildId &&
+                parentId === parent.id &&
+                childId >= parent.checkedChildId)
+            }
           />
-        ))}
+        </label>
+        <button onClick={handleAddList}>Add List</button>
+        <button onClick={handleChecked}>Select List</button>
+        <button onClick={removeList}>Remove Child</button>
+        {childId === 0 && <button onClick={removeParent}>Remove This Parent</button>}
+      </div>
+      <div
+        className="child-container"
+        style={{ position: "relative", left: "30px" }}
+      >
+        {hasChild && (
+          <List
+            parent={parent}
+            parentId={parentId}
+            childId={childId + 1}
+            checkedChildId={checkedChildId}
+            setIdChecked={setIdChecked}
+          />
+        )}
       </div>
     </div>
   );
